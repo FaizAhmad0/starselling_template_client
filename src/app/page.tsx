@@ -126,10 +126,10 @@ export default function Home() {
             aria-hidden="true"
           />
           <div
-            className={`${container} grid items-center gap-12 pt-16 pb-12 sm:pt-20 sm:pb-16 lg:grid-cols-[1fr_1.04fr] lg:gap-12 lg:py-24 xl:gap-20`}
+            className={`${container} grid items-center gap-12 pt-16 pb-8 sm:pt-20 sm:pb-16 lg:grid-cols-[1fr_1.04fr] lg:gap-12 lg:py-24 xl:gap-20`}
           >
             <div className="max-w-xl">
-              <p className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-primary/15 bg-primary/5 px-3.5 py-2 text-xs font-medium text-primary dark:text-foreground">
+              <p className=" inline-flex items-center gap-2.5 rounded-full border border-primary/15 bg-primary/5 px-3.5 py-2 text-xs font-medium text-primary dark:text-foreground">
                 <span
                   className="size-1.5 rounded-full bg-primary"
                   aria-hidden="true"
@@ -146,7 +146,7 @@ export default function Home() {
                   Get your website ready.
                 </span>
               </h1>
-              <p className="mt-7 max-w-[440px] text-base leading-8 text-muted-foreground sm:text-lg">
+              <p className="mt-7 max-w-[440px] text-base leading-6 text-muted-foreground sm:text-sm">
                 Give your business a professional online presence with website
                 development plans built around your needs.
               </p>
@@ -360,7 +360,7 @@ export default function Home() {
               </p>
             </div>
           </Reveal>
-          <div className="mt-12 grid items-start gap-6 lg:grid-cols-3">
+          <div className="mt-14 grid items-start gap-8 rounded-4xl bg-muted/40 p-4 sm:p-6 lg:grid-cols-3">
             {plans.map((plan) => (
               <article key={plan.id} aria-labelledby={`plan-${plan.id}`}>
                 <PlanCard plan={plan} />

@@ -18,14 +18,6 @@ test("homepage is public, server rendered, and has working destinations", async 
   await expect(page.locator("h1")).toHaveCount(1);
   await expect(page.getByRole("banner")).toHaveCount(1);
   await expect(page.getByRole("main")).toBeVisible();
-  for (const name of ["Basic", "Premium", "Advanced"]) {
-    await expect(
-      page.getByRole("link", { name: `Learn more about ${name}` }),
-    ).toHaveAttribute(
-      "href",
-      `https://starsellingz.com/product/website-developments-${name.toLowerCase()}/`,
-    );
-  }
   const missingTargets = await page
     .locator('a[href^="#"]')
     .evaluateAll((links) =>
@@ -44,6 +36,23 @@ test("homepage is public, server rendered, and has working destinations", async 
   const dashboard = await request.get("/dashboard", { maxRedirects: 0 });
   expect(dashboard.status()).toBe(307);
   expect(dashboard.headers().location).toContain("/login");
+});
+
+test("subscription prices and product links match the chosen plans", async ({ page }) => {
+  await page.goto("/#pricing");
+  for (const [name, price] of [
+    ["Basic", "₹11,800"],
+    ["Premium", "₹23,600"],
+    ["Advanced", "₹35,000"],
+  ]) {
+    const card = page.getByRole("article", { name, exact: true });
+    await expect(card.getByText(price, { exact: true })).toBeVisible();
+    await expect(card.getByRole("link", { name: `Subscribe Now to ${name}` })).toHaveAttribute(
+      "href",
+      `https://starsellingz.com/product/website-developments-${name.toLowerCase()}/`,
+    );
+  }
+  await expect(page.locator("#pricing")).not.toContainText(/monthly|yearly|Contact for pricing/i);
 });
 
 for (const width of [320, 375, 768, 1024, 1440]) {
@@ -102,6 +111,16 @@ for (const width of [320, 375, 768, 1024, 1440]) {
       )
       .toBe(96);
     if (width === 375 || width === 1440) {
+      await page
+        .locator(
+          width === 375
+            ? '#pricing article[aria-labelledby="plan-basic"]'
+            : "#pricing",
+        )
+        .screenshot({
+          path: testInfo.outputPath(`pricing-${width}.png`),
+          animations: "disabled",
+        });
       await page.evaluate(() =>
         window.scrollTo({ top: 0, behavior: "instant" }),
       );

@@ -24,12 +24,16 @@ export const featureLabels = {
 
 export type FeatureId = keyof typeof featureLabels;
 
+export interface PlanPrice {
+  amount: number;
+  currency: "INR";
+}
+
 export interface Plan {
   id: PlanId;
   name: string;
-  eyebrow: string;
   description: string;
-  price: string;
+  price: PlanPrice;
   href: string;
   recommended: boolean;
   featured: readonly FeatureId[];
@@ -42,16 +46,23 @@ export const statusLabels: Record<FeatureStatus, string> = {
   "not-specified": "Not specified",
 };
 
+export function formatPlanPrice(price: PlanPrice): string {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: price.currency,
+    maximumFractionDigits: 0,
+  }).format(price.amount);
+}
+
 // Unspecified services are intentional: responsive development and mobile app
 // development are separate entries, with no inferred inclusions.
 export const plans: readonly Plan[] = [
   {
     id: "basic",
     name: "Basic",
-    eyebrow: "Refine your existing website",
     description:
       "Catalog, content, and SEO services for a website you already have.",
-    price: "Contact for pricing",
+    price: { amount: 11_800, currency: "INR" },
     href: "https://starsellingz.com/product/website-developments-basic/",
     recommended: false,
     featured: [
@@ -86,10 +97,9 @@ export const plans: readonly Plan[] = [
   {
     id: "premium",
     name: "Premium",
-    eyebrow: "Build your online presence",
     description:
       "Website setup, professional design, ecommerce integrations, and support.",
-    price: "Contact for pricing",
+    price: { amount: 23_600, currency: "INR" },
     href: "https://starsellingz.com/product/website-developments-premium/",
     recommended: true,
     featured: [
@@ -124,10 +134,9 @@ export const plans: readonly Plan[] = [
   {
     id: "advanced",
     name: "Advanced",
-    eyebrow: "Take the next step with an app",
     description:
       "Premium’s listed services, with mobile app development included.",
-    price: "Contact for pricing",
+    price: { amount: 35_000, currency: "INR" },
     href: "https://starsellingz.com/product/website-developments-advanced/",
     recommended: false,
     featured: [

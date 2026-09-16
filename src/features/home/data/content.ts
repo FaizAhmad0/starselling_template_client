@@ -40,6 +40,6 @@ export const faqs: readonly Faq[] = [
     id: "pricing-details",
     question: "Where can I find pricing and subscription details?",
     answer:
-      "Select Learn More on a plan to visit its Star Selling product page for pricing and subscription details. Pricing and billing terms are not listed here; confirm those details on the product page before subscribing.",
+      "Prices are shown on each plan card. Select Subscribe Now to visit the plan’s Star Selling product page and review the subscription details. Confirm the billing period and applicable terms on the product page before subscribing.",
   },
 ];

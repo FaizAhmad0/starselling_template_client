@@ -22,7 +22,9 @@ You can start editing the page by modifying `src/app/page.tsx`. The page auto-up
 
 The homepage lives at `/`. Plan inclusions and product links are configured in
 `src/features/home/data/plans.ts`; FAQ content is in `src/features/home/data/content.ts`.
-Prices and billing terms are not configured, so each plan displays “Contact for pricing.”
+Plan prices are configured in INR: Basic ₹11,800, Premium ₹23,600, and Advanced ₹35,000.
+Subscribe Now links lead to the corresponding product pages. Billing periods and terms
+are not configured; the homepage does not assume monthly or annual billing.
 The existing dashboard navbar has a public variant; authentication and protected routes
 retain their existing behavior.
 

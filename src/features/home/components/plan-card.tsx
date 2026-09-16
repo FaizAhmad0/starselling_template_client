@@ -1,16 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  CircleHelp,
-  Layers3,
-  LayoutGrid,
-  Smartphone,
-  X,
-} from "lucide-react";
+import { Check, ChevronDown, CircleHelp, Star, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/shared/button-link";
 import {
@@ -28,6 +19,7 @@ import { cn } from "@/lib/utils";
 import {
   featureIds,
   featureLabels,
+  formatPlanPrice,
   statusLabels,
   type FeatureId,
   type FeatureStatus,
@@ -39,25 +31,32 @@ const statusIcons = {
   excluded: X,
   "not-specified": CircleHelp,
 };
-const planIcons = { basic: LayoutGrid, premium: Layers3, advanced: Smartphone };
+interface FeatureProps {
+  id: FeatureId;
+  status: FeatureStatus;
+  highlighted: boolean;
+}
 
-function Feature({ id, status }: { id: FeatureId; status: FeatureStatus }) {
+function Feature({ id, status, highlighted }: FeatureProps) {
   const Icon = statusIcons[status];
   return (
     <li
-      className="flex min-h-14 items-start gap-3 py-2 lg:min-h-19"
+      className="flex min-h-12 items-start gap-3 py-1 lg:min-h-17 xl:min-h-12"
       data-feature={id}
       data-status={status}
     >
       <span
         className={cn(
-          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
+          "mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full",
           status === "included"
             ? "bg-primary/10 text-primary dark:text-foreground"
             : "bg-muted text-muted-foreground",
+          highlighted &&
+            status === "included" &&
+            "bg-primary text-primary-foreground dark:text-primary-foreground",
         )}
       >
-        <Icon className="size-3" aria-hidden="true" />
+        <Icon className="size-3.5" strokeWidth={2.5} aria-hidden="true" />
       </span>
       <span className="min-w-0 text-sm leading-5">
         <span
@@ -77,57 +76,46 @@ function Feature({ id, status }: { id: FeatureId; status: FeatureStatus }) {
 
 export function PlanCard({ plan }: { plan: Plan }) {
   const [open, setOpen] = useState(false);
-  const Icon = planIcons[plan.id];
   const remaining = featureIds.filter((id) => !plan.featured.includes(id));
 
   return (
     <Card
       className={cn(
-        "relative gap-0 overflow-visible rounded-2xl p-6 ring-1 ring-border sm:p-7",
-        plan.recommended && "bg-primary/[0.025] ring-2 ring-primary",
+        "relative gap-0 overflow-visible rounded-3xl px-6 py-2 shadow-sm shadow-foreground/5 ring-1 ring-border sm:rounded-4xl sm:p-8",
+        plan.recommended && "shadow-xl shadow-primary/10 ring-primary",
       )}
     >
+      {plan.recommended && (
+        <Badge className="absolute top-0 left-1/2 h-8 -translate-x-1/2 -translate-y-1/2 gap-1.5 px-4 text-xs shadow-md shadow-primary/15">
+          <Star aria-hidden="true" /> Recommended
+        </Badge>
+      )}
       <CardHeader className="gap-0 px-0">
-        <div className="mb-6 flex h-10 items-center justify-between gap-2">
-          <span
-            className={cn(
-              "flex size-10 items-center justify-center rounded-xl border border-border bg-background",
-              plan.recommended &&
-                "border-primary/20 bg-primary/10 text-primary dark:text-foreground",
-            )}
-          >
-            <Icon className="size-5" aria-hidden="true" />
-          </span>
-          {plan.recommended && (
-            <Badge className="h-7 px-3 text-xs">Recommended</Badge>
-          )}
-        </div>
-        <p className="mb-2 text-xs font-medium text-muted-foreground">
-          {plan.eyebrow}
-        </p>
         <h3
           id={`plan-${plan.id}`}
-          className="font-heading text-2xl font-semibold tracking-tight"
+          className={cn(
+            "font-heading text-xl font-bold uppercase tracking-tight",
+            plan.recommended && "text-primary dark:text-foreground",
+          )}
         >
           {plan.name}
         </h3>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground lg:min-h-18">
+        <p className="mt-2 whitespace-nowrap font-heading text-[2.75rem] font-bold leading-none tracking-[-0.05em] tabular-nums sm:text-4xl">
+          {formatPlanPrice(plan.price)}
+        </p>
+        <p className="mt-2 text-xs leading-5 text-muted-foreground lg:min-h-18">
           {plan.description}
         </p>
-        <p className="mt-7 font-heading text-xl font-semibold tracking-tight">
-          {plan.price}
-        </p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          See the plan page for pricing and details.
-        </p>
       </CardHeader>
-      <CardContent className="mt-6 border-t border-border px-0 pt-5">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Plan at a glance
-        </p>
+      <CardContent className=" border-t border-border px-0 pt-2">
         <ul aria-label={`${plan.name} key features`}>
           {plan.featured.map((id) => (
-            <Feature key={id} id={id} status={plan.features[id]} />
+            <Feature
+              key={id}
+              id={id}
+              status={plan.features[id]}
+              highlighted={plan.recommended}
+            />
           ))}
         </ul>
         <Collapsible open={open} onOpenChange={setOpen}>
@@ -140,15 +128,21 @@ export function PlanCard({ plan }: { plan: Plan }) {
               aria-label={`${plan.name} additional features`}
             >
               {remaining.map((id) => (
-                <Feature key={id} id={id} status={plan.features[id]} />
+                <Feature
+                  key={id}
+                  id={id}
+                  status={plan.features[id]}
+                  highlighted={plan.recommended}
+                />
               ))}
             </ul>
           </CollapsibleContent>
           <CollapsibleTrigger
-            className="mt-3 flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-md text-sm font-medium text-foreground hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            className="mt-3 flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary dark:text-foreground"
             aria-label={`${open ? "Show fewer features" : "View all features"} for ${plan.name}`}
           >
             {open ? "Show fewer features" : "View all features"}
+            {!open && <span aria-hidden="true">(+{remaining.length})</span>}
             <ChevronDown
               className={cn(
                 "size-4 transition-transform duration-300 motion-reduce:transition-none",
@@ -159,14 +153,19 @@ export function PlanCard({ plan }: { plan: Plan }) {
           </CollapsibleTrigger>
         </Collapsible>
       </CardContent>
-      <CardFooter className="mt-6 px-0">
+      <CardFooter className="mt-7 px-0">
         <ButtonLink
           href={plan.href}
-          aria-label={`Learn more about ${plan.name}`}
+          aria-label={`Subscribe Now to ${plan.name}`}
           variant={plan.recommended ? "default" : "outline"}
-          className="h-12 w-full justify-between rounded-lg px-4 text-sm"
+          className={cn(
+            "h-14 w-full rounded-xl border-2 border-primary px-4 text-base font-semibold",
+            plan.recommended
+              ? "shadow-md shadow-primary/15"
+              : "text-primary hover:bg-primary/5 hover:text-primary dark:text-foreground dark:hover:text-foreground",
+          )}
         >
-          Learn More <ArrowUpRight className="size-4" aria-hidden="true" />
+          Subscribe Now
         </ButtonLink>
       </CardFooter>
     </Card>
