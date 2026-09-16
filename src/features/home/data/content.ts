@@ -1,6 +1,4 @@
 export const homeLinks = [
-  // { label: "How It Works", href: "#how-it-works" },
-  // { label: "Benefits", href: "#benefits" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ] as const;

@@ -440,55 +440,106 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-border bg-muted/25">
-        <div className={`${container} pt-12 pb-6`}>
-          <div className="flex flex-col justify-between gap-10 pb-12 md:flex-row">
-            <div className="max-w-xs">
-              <Link
-                href="/"
-                aria-label="Star Selling home"
-                className="inline-flex rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-              >
-                <Image
-                  src="/logo.png"
-                  alt="Star Selling"
-                  width={854}
-                  height={255}
-                  sizes="184px"
-                  className="h-auto w-[184px]"
-                />
-              </Link>
-              <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                Website, catalog, and SEO services to help your business take
-                its next step online.
-              </p>
-            </div>
-            <nav
-              aria-label="Footer navigation"
-              className="grid grid-cols-2 gap-x-12 gap-y-4 self-start text-sm sm:grid-cols-4 md:pt-3"
+        <div
+          className={`${container} grid gap-12 pt-14 pb-10 md:grid-cols-[minmax(0,1fr)_auto]`}
+        >
+          <div className="max-w-xs">
+            <Link
+              href="/"
+              aria-label="Star Selling home"
+              className="inline-flex rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
-              {homeLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="inline-flex min-h-8 items-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground">
-            <p>
-              © {new Date().getFullYear()} Star Selling. All rights reserved.
+              <Image
+                src="/logo.png"
+                alt="Star Selling"
+                width={854}
+                height={255}
+                sizes="184px"
+                className="h-auto w-[184px]"
+              />
+            </Link>
+            <p className="mt-4 text-sm leading-7 text-muted-foreground">
+              Website, catalog, and SEO services to help your business take its
+              next step online.
             </p>
             <Link
               href="/login"
-              className="inline-flex min-h-8 items-center gap-2 rounded-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary"
+              className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-lg border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
-              Account sign in{" "}
-              <ArrowUpRight className="size-3" aria-hidden="true" />
+              Sign in
+              <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </Link>
           </div>
+
+          <nav
+            aria-label="Footer"
+            className="grid grid-cols-2 gap-x-16 gap-y-10 sm:gap-x-24"
+          >
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Company
+              </h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                {[
+                  { label: "Home", href: "/" },
+                  {
+                    label: "About Us",
+                    href: "/about-us",
+                  },
+                  {
+                    label: "Contact Us",
+                    href: "/contact-us",
+                  },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Legal
+              </h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                {[
+                  {
+                    label: "Privacy Policy",
+                    href: "/privacy-policy-2",
+                  },
+                  {
+                    label: "Terms and Conditions",
+                    href: "/terms-and-conditions",
+                  },
+                  {
+                    label: "Return and Refund Policy",
+                    href: "/return-and-refund-policy",
+                  },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <div
+          className={`${container} border-t flex border-border py-6 text-xs text-muted-foreground items-center justify-center`}
+        >
+          <p>© {new Date().getFullYear()} Star Selling. All rights reserved.</p>
         </div>
       </footer>
     </div>
