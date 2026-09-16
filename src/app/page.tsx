@@ -511,7 +511,7 @@ export default function Home() {
                 {[
                   {
                     label: "Privacy Policy",
-                    href: "/privacy-policy-2",
+                    href: "/privacy-policy",
                   },
                   {
                     label: "Terms and Conditions",
