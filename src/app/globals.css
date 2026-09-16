@@ -128,3 +128,43 @@
     @apply font-sans;
   }
 }
+
+/* Homepage-only behavior leaves dashboard scrolling and motion unchanged. */
+html:has(.home-page) {
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.home-page) {
+    scroll-behavior: smooth;
+  }
+}
+
+.home-hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--border) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--border) 40%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to right, transparent 25%, black);
+}
+
+.home-collapsible {
+  height: var(--collapsible-panel-height);
+  overflow: hidden;
+  transition: height 280ms ease-out;
+}
+
+.home-collapsible[data-starting-style],
+.home-collapsible[data-ending-style] {
+  height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

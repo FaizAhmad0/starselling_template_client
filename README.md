@@ -16,7 +16,29 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+
+## Homepage checks
+
+The homepage lives at `/`. Plan inclusions and product links are configured in
+`src/features/home/data/plans.ts`; FAQ content is in `src/features/home/data/content.ts`.
+Prices and billing terms are not configured, so each plan displays “Contact for pricing.”
+The existing dashboard navbar has a public variant; authentication and protected routes
+retain their existing behavior.
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
+
+The browser suite starts the production server on port 3210 and checks responsive
+layouts, navigation, all 54 feature statuses, independent expansion, FAQ keyboard
+behavior, reduced motion, animation visibility and pause controls, and accessibility.
+Screenshots are written to the ignored `test-results` directory. To use an existing
+Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to its executable path.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

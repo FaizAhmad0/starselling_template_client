@@ -1,0 +1,23 @@
+import type { ComponentProps } from "react";
+import type { VariantProps } from "class-variance-authority";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type ButtonLinkProps = ComponentProps<"a"> &
+  VariantProps<typeof buttonVariants>;
+
+// Navigation keeps native link semantics, using the existing shadcn styles.
+export function ButtonLink({
+  className,
+  variant,
+  size,
+  ...props
+}: ButtonLinkProps) {
+  return (
+    <a
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
+}
